@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+	var is_logged_in = {{ = 'false' if auth.user is None else 'true' }}; 
+	var get_excercises_url = "{{=URL('api', 'get_excercise_list', user_signature=True)}}"
+	var get_workouts_url = "{{=URL('api', 'get_workouts_list', user_signature=True)}}"
+	var get_username_url = "{{=URL('api', 'get_username', user_signature=True)}}"
+	var get_groups_url = "{{=URL('api', 'get_groups', user_signature=True)}}"
+	var get_metrics_url = "{{=URL('api', 'get_metrics', user_signature=True)}}"
+	var send_metrics_url = "{{=URL('api', 'send_metrics', user_signature=True)}}"
+
+</script>
+
+<div class="main_content">
+<div id="vue-div" class="display:none">
+ <div v-if = "is_logged_in">
+ 
+
+
+  		<div class="padded spaced red">
+              <h6> ${username}'s Dashboard </h6>
+            </div>
+    	<div id="workouts_list">
+    		<table class="list fill">
+				<thead> 
+					<th> <div class="tags"> Exercise Name: <span><i> Group </i></span></div> </th>
+						<th> <div class="tags"> Current (reps 10x3): <span><i> LBS </i></span></div> </th>
+						<th> <div class="tags"> Goal (reps 10x3): <span><i> LBS </i></span></div> </th>
+						<th>Actions</th>
+
+				</thead>
+				<tbody  v-for="exc in workouts_list">
+					<td><div class="tags"> ${exc.name} 
+						
+						<span> ${exc.target_group}
+						</span>
+					</div>
+
+					</td>
+
+					<td><div class="tags"><b>${exc.rep_weight}</b> lbs </td>
+					<td><div class="tags"><b>${exc.goal_weight}</b> lbs </td>
+					<td><a class="btn" href="#update_goals" v-on:click="clicked(exc.name, exc.rep_weight, exc.goal_weight)"><b>Update</b></a> </td>
+				
+				<div class="modal" id="update_goals">
+      		<div class="twothirds rounded black padded container">
+       			 <h5>Update <u>${curr_exc_name}</u> Metrics</h5>
+        		<a class="close" href="#">×</a>
+        			<input type="number" v-model="curr_weight"><i>Current Rep Weight (3x10)  <i></input>
+        			
+					<br><input type="number" v-model="goal_weight">Goal Rep Weight (3x10) </input>
+			
+					<center><br><a class="submit btn" v-on:click="send_metrics(email, curr_exc_name)" href="#">Submit</a><center>
+        	</div>
+      </div>
+    </div>
+    	</tbody>
+				{{pass}}
+			</table>
+
+	</div>
+	</div>
+    </div>
+</div>
+
+<script src="{{=URL('static', 'js/default_dashboard.js')}}"></script>

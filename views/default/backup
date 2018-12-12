@@ -1,0 +1,22 @@
+  		<div id = "groups" v-if = "is_onboarded == false">
+  			<h6> We've noticed that you haven't selected target body groups. Please do so below: </h4>
+  			<div id = "checklist" v-for = "group in groups_list">
+  				Part: ${group.group_name}
+  				<span> <button type="button" v-on:click="add()" class="btn btn-default">Submit
+  				</button></span>
+  			</div>
+  		</div>
+
+  		db.workouts.update_or_insert(
+			username = auth.user.email,
+			name = exc.name,
+			target_group = exc.group
+		)
+    
+    for exc in excercises:
+    print exc.target_group
+    db.workouts.update_or_insert(
+      username = auth.user.email,
+      target_group = exc.target_group,
+      name = exc.exc_name,
+    )

@@ -1,0 +1,31 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+	var is_logged_in = {{ = 'false' if auth.user is None else 'true' }}; 
+	var get_excercises_url = "{{=URL('api', 'get_excercise_list', user_signature=True)}}"
+	var get_workouts_url = "{{=URL('api', 'get_workouts_list', user_signature=True)}}"
+	var get_username_url = "{{=URL('api', 'get_username', user_signature=True)}}"
+	var get_groups_url = "{{=URL('api', 'get_groups', user_signature=True)}}"
+	var get_metrics_url = "{{=URL('api', 'get_metrics', user_signature=True)}}"
+	var send_metrics_url = "{{=URL('api', 'send_metrics', user_signature=True)}}"
+
+</script>
+
+
+<div class="main_content">
+<div id="vue-div" class="display:none">
+ <div v-if = "is_logged_in">
+  <div class="container">
+  	<div class="padded spaced red">
+              <h6> ${username}'s Feed </h6>
+    </div>
+
+
+
+<b>Pulse Feed</b>
+</div>
+
+<script src="{{=URL('static', 'js/default_dashboard.js')}}"></script>
