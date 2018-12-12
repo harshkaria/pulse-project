@@ -105,3 +105,68 @@ def send_metrics():
 
 	return "ok"
 
+def parse_url():
+	name = request.vars.name;
+
+	print "Name " + str(name)
+
+	value = feed_user_email(name)
+
+	return "ok"
+
+def feed_user_email(name):
+	row = db(db.auth_user.first_name == name).select().first()
+	print "TYPE: " + str(type(row))
+
+	email = row.email
+
+	if email is None:
+		email = "bla"
+
+	print email
+
+	return email
+
+def get_feed_list():
+	results = []
+	user_request = request.vars.name.title()
+	user_targets = feed_user_targets(user_request)
+
+	if (user_targets == False):
+	 return response.json(dict(feed_list = results))
+
+	email = feed_user_email(str(user_request))
+
+	rows = db(db.workouts.username == email).select(orderby=db.workouts.target_group)
+
+	for row in rows:
+		if (row.target_group in user_targets): # If the user has selected to work out this target group, then add to list
+			results.append(dict(
+			username = row.username,
+			name = row.name,
+			target_group = row.target_group,
+			rep_weight = row.rep_weight,
+			goal_weight = row.goal_weight
+
+		))
+	return response.json(dict(feed_list = results))
+
+
+
+def feed_user_targets(name):
+	print "NAME: " + str(name)
+	groups = db(db.auth_user.first_name == name).select()
+
+	targets = {}
+
+	# Gets the groups that the user has selected to work out
+	for group in groups:
+		targets = group.target_groups
+	
+	if len(targets) == 0:
+		return False
+
+	return set(targets)
+
+
+

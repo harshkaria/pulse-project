@@ -3,6 +3,8 @@
 {{block head}}
 {{end}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="{{=URL('static', 'js/underscore.js')}}"></script>
+<script src="{{=URL('static', 'js/vue-router.js')}}"></script>
 <script>
 	var is_logged_in = {{ = 'false' if auth.user is None else 'true' }}; 
 	var get_excercises_url = "{{=URL('api', 'get_excercise_list', user_signature=True)}}"
@@ -11,6 +13,9 @@
 	var get_groups_url = "{{=URL('api', 'get_groups', user_signature=True)}}"
 	var get_metrics_url = "{{=URL('api', 'get_metrics', user_signature=True)}}"
 	var send_metrics_url = "{{=URL('api', 'send_metrics', user_signature=True)}}"
+	var get_feed_url = "{{=URL('api', 'get_feed_list', user_signature=True)}}"
+	var request_name = "{{=firstname}}"
+
 
 </script>
 
@@ -20,12 +25,40 @@
  <div v-if = "is_logged_in">
   <div class="container">
   	<div class="padded spaced red">
-              <h6> ${username}'s Feed </h6>
+              <h6 v-show = "request_user != ''"> ${request_user}'s Feed </h6>
+              <input v-model="request_user" @input="isTyping = true" placeholder="Who's feed do you want to see?">
+              <div class="progress fill red" v-if="isTyping == true"><div class="indeterminate"></div></div>
+          	 </input>
     </div>
 
+    <div id="workouts_list">
+    		<table class="list fill" v-show = "feed_list.length != 0">
+				<thead> 
+					<th> <div class="tags"> Exercise Name: <span><i> Group </i></span></div> </th>
+						<th> <div class="tags"> Current (reps 10x3): <span><i> LBS </i></span></div> </th>
+						<th> <div class="tags"> Goal (reps 10x3): <span><i> LBS </i></span></div> </th>
+				</thead>
+				<tbody  v-for="exc in feed_list">
+					<td><div class="tags"> ${exc.name} 
+						
+						<span> ${exc.target_group}
+						</span>
+					</div>
 
+					</td>
 
-<b>Pulse Feed</b>
+					<td><div class="tags"><b>${exc.rep_weight}</b> lbs </td>
+					<td><div class="tags"><b>${exc.goal_weight}</b> lbs </td>
+				</tbody>
+
+			</table>
+
+			<div v-show = "feed_list.length === 0 && request_user != ''" class = "padded lifted red">
+				The user you searched for either does not exist, or has chosen to stay private.
+			</div>
+
+	</div>
+
 </div>
 
-<script src="{{=URL('static', 'js/default_dashboard.js')}}"></script>
+<script src="{{=URL('static', 'js/default_feed.js')}}"></script>

@@ -111,7 +111,8 @@ var app = function() {
             workouts_list: [],
             curr_exc_name: "",
             curr_weight: "",
-            goal_weight: ""
+            goal_weight: "",
+            isTyping: false
         },
         methods: 
         {

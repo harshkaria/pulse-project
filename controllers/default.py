@@ -11,7 +11,8 @@
 import datetime
 
 def index():
-    redirect(URL('dashboard'))
+    if auth.user:
+        redirect(URL('dashboard'))
     return dict()
 
 
@@ -40,11 +41,20 @@ def user():
 
 def dashboard():
 
+    if auth.user is None:
+        redirect(URL('index'))
+
     return dict()
 
 def feed():
+    if auth.user is None:
+        redirect(URL('index'))
+    name = request.vars.name;
 
-    return dict()
+    if name is None:
+        name = auth.user.first_name;
+
+    return dict(firstname=name)
 
 
 @cache.action()
