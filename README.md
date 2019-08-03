@@ -7,7 +7,7 @@ Allows for users to enter goal and rep weights for excercises, and then they may
 
 Built with Vue.js, Web2Py. 
 
-Demo: [Pulse](https://pulseapp.pythonanywhere.com/Pulse/default/index) API Key in AppDelegate.swift
+Demo: [Pulse](https://pulseapp.pythonanywhere.com/Pulse/default/index)
 
 # Screenshots
 ![Home](https://raw.githubusercontent.com/harshkaria/pulse-project/master/Pulse_Images/landing.png)
